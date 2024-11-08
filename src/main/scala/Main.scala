@@ -3,8 +3,9 @@ import cats.implicits._
 import scala.concurrent.ExecutionContext
 
 object Factorer {
+  
+  // cpu bound parallel (threadNum = coreNum) 
   val threadNum: Int = 4
-
   val threadPool: Resource[IO, ExecutionContext] =
     Resource.make(
       IO(
