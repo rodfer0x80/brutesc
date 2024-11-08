@@ -31,8 +31,7 @@ object Factorer {
     // and we only want that result for pure primes, but for bruteforcing
     // primes we generally are looking for (p, q) such that p != 1 and  q != 1
     factors.map { factor =>
-      factor
-        .reverse
+      factor.reverse
         .collectFirst { case (p, q) if p != 0 && q != 0 => (p, q) }
         .getOrElse((0, 0))
     }
@@ -44,7 +43,7 @@ object Main extends IOApp.Simple {
   def run: IO[Unit] = {
     val target: Int = 13533571
     // 0 < p and q <= targetDivLim where p and q are the divisor of a prime number
-    val targetDivLim: Int = 10000 
+    val targetDivLim: Int = 10000
 
     for {
       _ <- IO { println(s"target: ${target}") }
