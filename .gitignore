@@ -1,5 +1,5 @@
-# macOS
-.DS_Store
+project/
+target/
 
 # sbt specific
 dist/*

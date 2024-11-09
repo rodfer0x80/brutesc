@@ -3,7 +3,7 @@ import cats.implicits._
 import scala.concurrent.ExecutionContext
 
 object Factorer {
-  // cpu bound parallel (threadNum = coreNum) 
+  // cpu bound parallel (threadNum = coreNum)
   val threadNum: Int = 4
   val threadPool: Resource[IO, ExecutionContext] =
     Resource.make(
@@ -22,18 +22,19 @@ object Factorer {
       IO {
         (start to end)
           .collectFirst {
-            case n if target % n == 0 => (n, target / n)
+            case n if n != 1 && n != target && target % n == 0 =>
+              (n, target / n)
           }
-          .getOrElse((0, 0))
+          .getOrElse((1, target))
       }
     }
     // reverse the list since the first result will always be (1, target)
     // and we only want that result for pure primes, but for bruteforcing
     // primes we generally are looking for (p, q) such that p != 1 and  q != 1
     factors.map { factor =>
-      factor.reverse
-        .collectFirst { case (p, q) if p != 0 && q != 0 => (p, q) }
-        .getOrElse((0, 0))
+      factor
+        .collectFirst { case (p, q) if p != 1 && q != target => (p, q) }
+        .getOrElse((1, target))
     }
   }
 
