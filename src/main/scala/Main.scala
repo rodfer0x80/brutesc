@@ -94,7 +94,7 @@ object Factorer {
     }
   }
 
-  def findFactorsStream(target: Int): IO[(Int, Int)] = {
+  def findFactorsFS2Stream(target: Int): IO[(Int, Int)] = {
     val maxFactor: Int = sqrt(target).toInt
     val threadChunk: Int = maxFactor / threadNum
     val chunks: List[(Int, Int)] = (0 until threadNum)
@@ -129,7 +129,7 @@ object Factorer {
         threadPool
           .use { ec =>
             Factorer
-              .findFactorsStream(target)
+              .findFactorsFS2Stream(target)
               .evalOn(ec)
           }
           .flatMap { (p, q) =>
