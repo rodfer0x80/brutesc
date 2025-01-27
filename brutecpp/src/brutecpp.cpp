@@ -10,22 +10,24 @@ void factor(long long target, long long startFactor, long long endFactor) {
     if (target % i == 0) {
       {
         std::lock_guard<std::mutex> guard(m);
-        p = i;
-        q = target / i;
-        f.store(true);
+        if (!f.load()) {
+          p = i;
+          q = target / i;
+          f.store(true);
+        }
       }
       break;
     }
   }
 }
 
-void factorize(long long target, int threads) {
+std::pair<long long, long long> factorize(long long target, int threads) {
+  p = 1;
+  q = target;
+
   long long sqrtTarget = std::sqrt(target);
 
   std::vector<std::thread> threadVec;
-
-  std::cout << "Threads: " << threads << std::endl;
-  std::cout << "Target: " << target << std::endl;
 
   for (int i = 0; i < threads; i++) {
     long long startFactor = 2 + (sqrtTarget / threads) * i;
@@ -33,8 +35,8 @@ void factorize(long long target, int threads) {
     if (endFactor > sqrtTarget)
       endFactor = sqrtTarget;
 
-    std::cout << "Thread [" << i + 1 << "] : range " << startFactor << " to "
-              << endFactor << std::endl;
+    //std::cout << "Thread [" << i + 1 << "] : range " << startFactor << " to "
+    //          << endFactor << std::endl;
 
     threadVec.push_back(std::thread(factor, target, startFactor, endFactor));
   }
@@ -42,4 +44,5 @@ void factorize(long long target, int threads) {
   for (auto &t : threadVec) {
     t.join();
   }
+  return {p, q};
 }

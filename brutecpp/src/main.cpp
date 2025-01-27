@@ -3,6 +3,7 @@
 int main(int argc, char **argv) {
   int threads;
   long long target;
+  std::pair<long long, long long> pq;
 
   if (argc < 2 || argc > 3) {
     std::cerr << "Error: Invalid arguments" << std::endl;
@@ -17,17 +18,17 @@ int main(int argc, char **argv) {
   }
   target = std::atoll(argv[1]);
 
-  p = 1;
-  q = target;
+  std::cout << "Threads: " << threads << std::endl;
+  std::cout << "Target: " << target << std::endl;
 
-  factorize(target, threads);
+  pq = factorize(target, threads);
 
-  if (p == 1 && q == target) {
-    std::cout << "[PRIME] " << target << ": (" << p << ", " << q << ")"
-              << std::endl;
+  if (pq.first == 1 && pq.second == target) {
+    std::cout << "[PRIME]: " << target << "->(" << pq.first << ", " << pq.second
+              << ")" << std::endl;
   } else {
-    std::cout << "[NOT PRIME] " << target << ": (" << p << ", " << q << ")"
-              << std::endl;
+    std::cout << "[NOT PRIME]: " << target << "->(" << pq.first << ", "
+              << pq.second << ")" << std::endl;
   }
 
   return 0;

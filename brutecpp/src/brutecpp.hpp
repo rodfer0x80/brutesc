@@ -15,6 +15,6 @@ extern long long p;
 extern long long q;
 
 void factor(long long target, long long startFactor, long long endFactor);
-void factorize(long long target, int threads);
+std::pair<long long, long long> factorize(long long target, int threads);
 
 #endif // BRUTECPP_HPP
