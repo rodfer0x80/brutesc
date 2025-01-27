@@ -20,7 +20,7 @@ class MainTest extends munit.CatsEffectSuite {
       }
     } yield assertEquals(pqTest, pq)
   }
-  
+
   test(
     "1993 = 1993 x 1"
   ) {
